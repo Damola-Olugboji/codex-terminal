@@ -1,0 +1,13 @@
+.layoutContainer {
+  height: 100vh;
+  width: 100vw;
+}
+
+.window {
+  height: 100%;
+  width: 100%;
+}
+
+.toolbar {
+  display: inline-block;
+}
