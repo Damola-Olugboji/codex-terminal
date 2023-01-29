@@ -7,36 +7,64 @@ import {
   TableHeadCell,
   TableRow,
 } from 'react95';
+import styles from './stockquotelist.module.css';
 const tickers = require('../../src/stocktickers');
+let randchars = [
+  '*',
+  '%',
+  '$',
+  '&',
+  '@',
+  '!',
+  '^',
+  '~',
+  '+',
+  '?',
+  '/',
+  '|',
+  '<',
+  '>',
+];
 
 const StockQuoteList = () => {
   const [data, setData] = useState({});
+  const [updatedRows, setUpdatedRows] = useState([]);
 
   useEffect(() => {
-    // create an array to store the API call promises
-    const promises = [];
+    const interval = setInterval(() => {
+      const promises = [];
+      tickers.forEach((ticker) => {
+        promises.push(
+          fetch(`https://generic709.herokuapp.com/stockc/${ticker}`)
+            .then((response) => response.json())
+            .then((data) => {
+              setData((prevData) => ({ ...prevData, [ticker]: data }));
+              setUpdatedRows([...updatedRows, ticker]);
+            })
+        );
+      });
+    }, 1000);
 
-    // loop through the tickers and make an API call for each one
-    tickers.forEach((ticker) => {
-      promises.push(
-        fetch(`https://generic709.herokuapp.com/stockc/${ticker}`)
-          .then((response) => response.json())
-          .then((data) => {
-            setData((prevData) => ({ ...prevData, [ticker]: data }));
-          })
-      );
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    updatedRows.forEach((ticker) => {
+      document.getElementById(ticker).classList.add(styles.updatedRow);
     });
+  }, [updatedRows]);
 
-    // wait for all API calls to complete
-    Promise.all(promises).then(() => {
-      // update the component's state with the data
+  useEffect(() => {
+    updatedRows.forEach((ticker) => {
+      setTimeout(() => {
+        document.getElementById(ticker).classList.remove(styles.updatedRow);
+      }, 1000);
     });
-  }, [tickers]);
-
+  }, [updatedRows]);
   return (
-    <>
-      <Table>
-        <TableHead>
+    <div className={styles.quoteContainer}>
+      <Table className={styles.quoteTable}>
+        <TableHead className={styles.quoteTableHead}>
           <TableRow>
             <TableHeadCell>Ticker</TableHeadCell>
             <TableHeadCell>Price</TableHeadCell>
@@ -44,17 +72,18 @@ const StockQuoteList = () => {
             <TableHeadCell disabled>Volume</TableHeadCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody className={styles.quoteTableBody}>
           {tickers.map((ticker) => {
             const stockData = data[ticker];
 
             return (
-              <TableRow key={ticker}>
+              <TableRow key={ticker} id={ticker}>
                 <TableDataCell style={{ textAlign: 'center' }}>
                   <p>{ticker}</p>
                 </TableDataCell>
                 <TableDataCell>
-                  {stockData ? stockData.price : '...'}
+                  ${stockData ? stockData.price : '...'}
+                  {/* {randchars[Math.floor(Math.random() * 10)]} */}
                 </TableDataCell>
                 <TableDataCell>
                   {stockData ? stockData.change : '...'}
@@ -67,7 +96,7 @@ const StockQuoteList = () => {
           })}
         </TableBody>
       </Table>
-    </>
+    </div>
   );
 };
 

@@ -1,0 +1,15 @@
+.quoteContainer {
+  overflow: auto;
+  max-height: 80vh;
+}
+.quoteTable {
+  position: relative;
+}
+
+.quoteTableBody {
+  text-align: right;
+}
+.updatedRow {
+  background-color: yellow;
+  transition: background-color 0.5s ease;
+}

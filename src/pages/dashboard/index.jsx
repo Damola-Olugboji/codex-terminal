@@ -9,7 +9,9 @@ export default function Dashboard() {
       <Head></Head>
       <MainLayout>
         <div className={styles.bodyContainer}>
-          <QuoteList></QuoteList>
+          <div className={styles.quotesContainer}>
+            <QuoteList></QuoteList>
+          </div>
         </div>
       </MainLayout>
     </>

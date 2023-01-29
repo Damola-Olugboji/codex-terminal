@@ -1,3 +1,7 @@
 .bodyContainer {
   display: flex;
 }
+
+.quotesContainer {
+  max-height: 100vh;
+}
