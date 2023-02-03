@@ -2,9 +2,7 @@ import styles from '@/styles/Home.module.css';
 import { Inter } from '@next/font/google';
 import CustomButton from 'components/buttons/CustomButton';
 import Head from 'next/head';
-import {
-  Window, WindowContent, WindowHeader
-} from 'react95';
+import { Window, WindowContent, WindowHeader } from 'react95';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,13 +18,14 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.container}>
           <Window className={styles.window}>
-            <WindowHeader >
-              Codex Terminal
-            </WindowHeader>
+            <WindowHeader>Codex Terminal</WindowHeader>
             <WindowContent>
               <div className={styles.windowContent}>
                 <p className={styles.contentText}> Do you want to enter?</p>
-                <CustomButton buttonText="Enter" href="/dashboard"></CustomButton>
+                <CustomButton
+                  buttonText="Enter"
+                  href="/dashboard"
+                ></CustomButton>
               </div>
             </WindowContent>
           </Window>
