@@ -4,4 +4,6 @@
 
 .quotesContainer {
   max-height: 100vh;
+  display: flex;
+  width: 55%;
 }

@@ -10,8 +10,8 @@ import {
   TableRow,
   TextInput,
 } from 'react95';
-import styles from './stockquotelist.module.css';
-const tickers = require('../../src/stocktickers');
+import styles from './cryptoquotelist.module.css';
+const tickers = require('../../src/cryptoTickers');
 let randchars = [
   '*',
   '%',
@@ -29,7 +29,7 @@ let randchars = [
   '>',
 ];
 
-const StockQuoteList = ({ title }) => {
+const CryptoQuoteList = ({ title }) => {
   const [ticker, setTicker] = useState({
     value: '',
   });
@@ -58,7 +58,7 @@ const StockQuoteList = ({ title }) => {
   const grab = async () => {
     for (const singleTicker of tickers) {
       const res1 = await fetch(
-        `https://generic709.herokuapp.com/stockc/${singleTicker}`
+        `https://api.binance.us/api/v3/ticker/price?symbol=${singleTicker}USD`
       );
       let quote;
       try {
@@ -69,6 +69,7 @@ const StockQuoteList = ({ title }) => {
       }
       quote['rand'] = randchars[Math.floor(Math.random() * 10)];
       setData((data) => ({ ...data, [singleTicker]: quote }));
+      console.log(data);
     }
   };
 
@@ -96,6 +97,7 @@ const StockQuoteList = ({ title }) => {
               <TableHeadCell>Ticker</TableHeadCell>
               <TableHeadCell>Price</TableHeadCell>
               <TableHeadCell disabled>Change</TableHeadCell>
+              <TableHeadCell disabled>Volume</TableHeadCell>
             </TableRow>
           </TableHead>
           <TableBody className={styles.quoteTableBody}>
@@ -103,7 +105,7 @@ const StockQuoteList = ({ title }) => {
               const stockData = data[ticker];
               return (
                 <TableRow key={ticker} id={ticker}>
-                  <TableDataCell style={{ textAlign: 'center' }}>
+                  <TableDataCell style={{ paddingRight: '1rem' }}>
                     <p>{stockData ? ticker + stockData.rand : '...'}</p>
                   </TableDataCell>
                   <TableDataCell>
@@ -112,6 +114,9 @@ const StockQuoteList = ({ title }) => {
                   </TableDataCell>
                   <TableDataCell>
                     {stockData ? stockData.change : '...'}
+                  </TableDataCell>
+                  <TableDataCell>
+                    {stockData ? stockData.volume : '...'}
                   </TableDataCell>
                 </TableRow>
               );
@@ -123,4 +128,4 @@ const StockQuoteList = ({ title }) => {
   );
 };
 
-export default StockQuoteList;
+export default CryptoQuoteList;
